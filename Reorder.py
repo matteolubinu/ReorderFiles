@@ -3,7 +3,8 @@ import glob
 import shutil
 import os
 
-pathToSearchIn = '/Users/matteolubinu/Downloads'
+path = '/Users/matteolubinu'
+pathToSearchIn = path+'/Downloads'
 
 def init():
     folderSize = len([file for file in glob.glob(glob.escape(pathToSearchIn) + '/**/*', recursive=True)])
@@ -17,14 +18,20 @@ def sizeChecker(folderSize):
     print("Folder size (new size):" , newFolderSize , "Elements")
     if newFolderSize > oldFolderSize:
         print ("Changes detected")
-        newFile = ""
         newFile = divideFiles()
-        if newFile.endswith('.pdf'): #PDF file if
-            destination = '/Users/matteolubinu/Libri' #Change the folder destination
+        #PDF file 
+        if newFile.endswith('.pdf'): 
+            destination = path+'/Libri' #change the folder destination (Must NOT be a system directory)
             shutil.move(newFile, destination)
             main()
-        if newFile.endswith('.mkv') or newFile.endswith('.mp4') : #Video file if
-            destination = '/Users/matteolubinu/Video' #Change the folder destination
+        #Image files
+        if newFile.endswith('.png') or newFile.endswith('.jpeg') or newFile.endswith('.jpg') : 
+            destination = path+'/Immagini' #change the folder destination (Must NOT be a system directory)
+            shutil.move(newFile, destination)
+            main()
+            #Video files
+        if newFile.endswith('.mkv') or newFile.endswith('.mp4'): 
+            destination = path+'/Anime' #change the folder destination (Must NOT be a system directory)
             shutil.move(newFile, destination)
             main()
     else: 
@@ -33,8 +40,8 @@ def sizeChecker(folderSize):
 
 def divideFiles():
    latestFile = ""
-   listOfFiles = glob.glob('/Users/matteolubinu/Downloads/*')
-   latestFile = sorted(listOfFiles, key=os.path.getmtime)[0]
+   listOfFiles = glob.glob(pathToSearchIn+'/*')
+   latestFile = max(listOfFiles, key=os.path.getmtime)
    print(latestFile)
    return latestFile
     
