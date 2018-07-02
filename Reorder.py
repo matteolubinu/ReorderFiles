@@ -18,22 +18,7 @@ def sizeChecker(folderSize):
     print("Folder size (new size):" , newFolderSize , "Elements")
     if newFolderSize > oldFolderSize:
         print ("Changes detected")
-        newFile = divideFiles()
-        #PDF file 
-        if newFile.endswith('.pdf'): 
-            destination = path+'/Libri' #change the folder destination (Must NOT be a system directory)
-            shutil.move(newFile, destination)
-            main()
-        #Image files
-        if newFile.endswith('.png') or newFile.endswith('.jpeg') or newFile.endswith('.jpg') : 
-            destination = path+'/Immagini' #change the folder destination (Must NOT be a system directory)
-            shutil.move(newFile, destination)
-            main()
-            #Video files
-        if newFile.endswith('.mkv') or newFile.endswith('.mp4'): 
-            destination = path+'/Anime' #change the folder destination (Must NOT be a system directory)
-            shutil.move(newFile, destination)
-            main()
+        reOrderFiles()
     else: 
         print ("No changes")
     sizeChecker(newFolderSize) #run again the function after time set
@@ -44,11 +29,33 @@ def divideFiles():
    latestFile = max(listOfFiles, key=os.path.getmtime)
    print(latestFile)
    return latestFile
+
+def reOrderFiles():
+    newFile = divideFiles()
+    #PDF files
+    if newFile.endswith('.pdf'): 
+            destination = path+'/Libri' #change the folder destination (Must NOT be a system directory)
+            shutil.move(newFile, destination)
+            main()
+    #Image files
+    if newFile.endswith('.png') or newFile.endswith('.jpeg') or newFile.endswith('.jpg') : 
+            destination = path+'/Immagini' #change the folder destination (Must NOT be a system directory)
+            shutil.move(newFile, destination)
+            main()
+    #Video files
+    if newFile.endswith('.mkv') or newFile.endswith('.mp4'): 
+            destination = path+'/Anime' #change the folder destination (Must NOT be a system directory)
+            shutil.move(newFile, destination)
+            main()
     
 def main():
     folderSize = init()
     sizeChecker(folderSize)  
 
-main()
+inputUser = input("Do you also want to reorder the files already present in the folder? [y/n] ")
+if (inputUser == "y"):
+    reOrderFiles()
+else:
+    main()
 
     
